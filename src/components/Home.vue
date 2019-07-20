@@ -3,9 +3,9 @@
     <el-container>
       <el-row :gutter="10">
         <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="4">
-          <el-aside width="220px" style="overflow: hidden;margin-top: -65px;">
-            <el-row style="overflow: hidden;height: 100%;">
-              <el-col :span="24" style="overflow: hidden;height: 100%;">
+          <el-aside width="220px" style="margin-top: -65px;">
+            <el-row style="height: 100%;">
+              <el-col :span="24" style="height: 100%;">
                 <el-menu :collapse="isCollapse" ref="elmenu" :router="true" unique-open :default-active="activeIndex" class="el-menu-vertical-demo" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
                   <!--<el-menu-item index="/menuConfig">
                     <i class="el-icon-menu"></i>
@@ -49,7 +49,7 @@
 
             <el-main>
               <transition mode="out-in">
-                <router-view v-if="isRouterAlive" style="position:relative;"></router-view>
+                <router-view v-if="isRouterAlive"></router-view>
               </transition>
             </el-main>
             <!--<el-footer>Footer</el-footer>-->
@@ -107,8 +107,11 @@
     },
     watch: {
       "$route.path": function(newVal) {
-        this.activeIndex2 = newVal;
-        this.activeIndex = newVal
+        const rout = newVal.split("/")
+//      alert(rout)
+        const activePart = "/"+rout[1]
+//      alert(activePart)
+        this.activeIndex = activePart
       }
     },
     computed: {

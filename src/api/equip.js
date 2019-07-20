@@ -14,3 +14,60 @@ export function getDetail(id){
     params: { id }
   })
 }
+
+export function getPm10(eno){
+  return request({
+    url: '/equip/getPm10',
+    method: 'get',
+    params: {eno}
+  })
+}
+
+export function getShowData(eno){
+  return request({
+    url: '/equip/getShowData',
+    method: 'get',
+    params: {eno}
+  })
+}
+
+export function getRef(eno){
+  return request({
+    url: '/equip/selectRef',
+    method: 'get',
+    params: { eno }
+  })
+}
+
+export function getCata(eno,rid){
+  return request({
+    url: '/equip/selectCata',
+    method: 'get',
+    params: { eno,rid }
+  })
+}
+
+export function getDetailData(cid,eno,rid){
+  return request({
+    url: '/equip/getDetailData',
+    method:'get',
+    params: { cid,eno,rid }
+  })
+}
+
+export function getRefByEdid(edid){
+  return request({
+    url: '/equip/getRefByEdid',
+    method: 'get',
+    params: { edid }
+  })
+}
+
+export function exportData(edid){
+  return request({
+    url: '/equip/exportEquipData',
+    method: 'get',
+    params: { edid }
+  })
+}
+

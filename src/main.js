@@ -14,6 +14,11 @@ import { formatRoutes } from '@/api/getUserRouter'
 import { initMenu } from '@/utils/menuUtil'
 import 'font-awesome/css/font-awesome.css'
 
+import moment from 'moment'
+Vue.filter('dateFormat',function(dataStr,pattern="YYYY-MM-DD HH:mm:ss"){
+  return moment(dataStr).format(pattern)
+})
+
 Vue.use(ElementUI)
 Vue.prototype.$echarts = echarts
 Vue.use(VueResource)
@@ -31,15 +36,6 @@ router.beforeEach((to, from, next) => {
         path: '/home'
       });
     } else {
-//    store.dispatch('user/getInfo', hasToken).then(response => {
-//      const data = response
-//      const id = data.id
-//      store.dispatch('getRouter/initmenu', id).then(response => {
-//        const data = response
-//       
-//      })
-//
-//    })
       store.dispatch('user/getInfo',hasToken).then(response => {
         const data = response
         const id = data.id

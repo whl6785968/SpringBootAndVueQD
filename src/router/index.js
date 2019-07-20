@@ -15,6 +15,7 @@ import breadcrumb from '@/components/breadcrumb.vue'
 import equipList from '@/components/equipList/'
 import authControl from '@/components/authControl/'
 import menuConfig from '@/components/authControl/components/menuConfig.vue'
+import ehistory from '@/components/equipList/components/history.vue'
 
 Vue.use(Router)
 
@@ -43,7 +44,10 @@ export default new Router({
           path:'/equipList',
           component:equipList
         },
-
+        {
+          path: '/equipList/ehistory',
+          component:ehistory
+        }
 
       ],
       hidden: true
