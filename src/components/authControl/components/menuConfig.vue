@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div style="margin-top: 20px;">
-      <span><el-input v-model="roleName" placeholder="请输入身份的英文名称或者汉语拼音名称" style="width: 300px;"></el-input></span>
-      <span><el-input v-model="roleZh" placeholder="请输入身份的中文" style="width: 300px;"></el-input></span>
+    <div style="margin-top: 20px;margin-left: 450px;">
+      <span><el-input v-model="roleName" placeholder="请输入身份的英文名称或者汉语拼音名称" style="width: 200px;"></el-input></span>
+      <span><el-input v-model="roleZh" placeholder="请输入身份的中文" style="width: 200px;"></el-input></span>
       <span><el-button type="primary" @click="addNewRole">添加身份</el-button></span>
     </div>
     <el-collapse accordion v-model="activeColItem" @change="collapseChange" style="margin-top: 20px;">

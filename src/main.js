@@ -14,6 +14,12 @@ import { formatRoutes } from '@/api/getUserRouter'
 import { initMenu } from '@/utils/menuUtil'
 import 'font-awesome/css/font-awesome.css'
 
+import BMap from 'vue-baidu-map'
+
+Vue.use(BMap,{
+  ak: 'xoKsurOO9lwXDwRt57TMef0A4eZ5m2ir'
+})
+
 import moment from 'moment'
 Vue.filter('dateFormat',function(dataStr,pattern="YYYY-MM-DD HH:mm:ss"){
   return moment(dataStr).format(pattern)

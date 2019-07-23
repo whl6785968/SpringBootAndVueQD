@@ -4,11 +4,11 @@
       <el-col :span="6">
         <div class="equip" style="box-shadow:0 0 3px #D3D4D6">
           <span>
-            <el-input v-model="input" placeholder="请输入设备名称或编号" size="small" style="width: 180px;margin-top: 30px;margin-left: -10px;"></el-input>
-            <el-button type="primary" size="small" style="margin-left: -5px;">
+            <el-input v-model="input" placeholder="请输入设备名称或编号" size="small" style="width: 180px;margin-top: 30px;margin-left: 30px;"></el-input>
+            <el-button type="primary" size="small" style="margin-left: 0px;">
                                 查询
             </el-button>
-            <el-button type="primary" size="small" style="margin-left: -1px;">
+            <el-button type="primary" size="small" style="margin-left: 0px;">
                                 分组                
             </el-button>
           </span>

@@ -5,48 +5,31 @@
         <el-form-item label="站点名称" prop="name">
           <el-input v-model="ruleForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="提交者" prop="uname">
-          <el-input v-model="ruleForm.uname"></el-input>
-        </el-form-item>
-
-        <el-form-item label="站点位置" prop="region">
-          <el-select v-model="ruleForm.region" placeholder="请选择站点位置">
-            <el-option label="南京" value="shanghai"></el-option>
-            <el-option label="上海" value="beijing"></el-option>
+        <el-form-item label="站点位置" prop="poi">
+          <el-select v-model="ruleForm.poi" placeholder="请选择站点位置">
+            <el-option label="南京理工大学" value="南京理工大学"></el-option>
+            <el-option label="东南大学" value="东南大学"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="提交时间" required>
-          <el-col :span="11">
-            <el-form-item prop="date1">
-              <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
-            </el-form-item>
-          </el-col>
-          <el-col class="line" :span="2">-</el-col>
-          <el-col :span="11">
-            <el-form-item prop="date2">
-              <el-time-picker placeholder="选择时间" v-model="ruleForm.date2" style="width: 100%;"></el-time-picker>
-            </el-form-item>
-          </el-col>
+          <el-form-item prop="mdate">
+            <el-date-picker v-model="ruleForm.mdate" type="datetime" placeholder="选择日期时间" default-time="12:00:00">
+            </el-date-picker>
+          </el-form-item>
         </el-form-item>
-        <el-form-item label="信息加急" prop="delivery">
-          <el-switch v-model="ruleForm.delivery"></el-switch>
+        <el-form-item label="信息加急" prop="isemer">
+          <el-switch v-model="ruleForm.isemer"></el-switch>
         </el-form-item>
         <el-form-item label="信息类型" prop="type">
-          <el-checkbox-group v-model="ruleForm.type">
-            <el-checkbox label="设备故障" name="type"></el-checkbox>
-            <el-checkbox label="水质异常" name="type"></el-checkbox>
-            <el-checkbox label="已修复" name="type"></el-checkbox>
-            <el-checkbox label="其他" name="type"></el-checkbox>
-          </el-checkbox-group>
-        </el-form-item>
-        <el-form-item label="特殊资源" prop="resource">
-          <el-radio-group v-model="ruleForm.resource">
-            <el-radio label="线上品牌商赞助"></el-radio>
-            <el-radio label="线下场地免费"></el-radio>
+          <el-radio-group v-model="ruleForm.type">
+            <el-radio label="设备故障"></el-radio>
+            <el-radio label="水质异常"></el-radio>
+            <el-radio label="已修复"></el-radio>
+            <el-radio label="其他"></el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="信息备注" prop="desc">
-          <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+        <el-form-item label="信息备注" prop="other">
+          <el-input type="textarea" v-model="ruleForm.other"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
@@ -59,20 +42,20 @@
 </template>
 
 <script>
+  import { getToken } from '@/utils/auth'
   export default {
     data() {
       return {
         ruleForm: {
           name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: '',
-          uname: ''
+          poi: '',
+          mdate: '',
+          isemer: false,
+          type: '',
+          other: '',
+          uid: ''
         },
+        inject: ['reload'],
         rules: {
           name: [{
               required: true,
@@ -86,40 +69,23 @@
               trigger: 'blur'
             }
           ],
-          uname: [{
-            required: true,
-            message: '请输入提交者姓名',
-            trigger: 'blur'
-          }],
-          region: [{
+          poi: [{
             required: true,
             message: '请选择站点位置',
             trigger: 'change'
           }],
-          date1: [{
+          mdate: [{
             type: 'date',
             required: true,
             message: '请选择日期',
             trigger: 'change'
           }],
-          date2: [{
-            type: 'date',
-            required: true,
-            message: '请选择时间',
-            trigger: 'change'
-          }],
           type: [{
-            type: 'array',
             required: true,
-            message: '请至少选择一个信息类型',
+            message: '请选择一个信息类型',
             trigger: 'change'
           }],
-          resource: [{
-            required: true,
-            message: '请选择活动资源',
-            trigger: 'change'
-          }],
-          desc: [{
+          other: [{
             required: true,
             message: '请填写信息被指',
             trigger: 'blur'
@@ -127,19 +93,26 @@
         }
       };
     },
+    mounted(){
+      this.getUserInfo()
+    },
     methods: {
+      getUserInfo(){
+        this.$store.dispatch('user/getInfo', getToken).then(response => {
+          this.ruleForm.uid = response.id
+        })
+      },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if(valid) {
-            alert('submit!');
-            this.$http.post("api/getnewslist", this.ruleForm).then(result => {
-              if(result.body.status === 0) {
-                this.newsList = result.body.message
-              } else {
-                Toast("fail to ge List")
-              }
-
-            })
+              this.$store.dispatch('msg/sendNotice', this.ruleForm).then(result => {
+                if(result.status == 200) {
+                  this.$message.success("提交成功")
+                  this.$router.push("/plan")
+                } else {
+                  this.$message.error("提交失败")
+                }
+              })
           } else {
             console.log('error submit!!');
             return false;

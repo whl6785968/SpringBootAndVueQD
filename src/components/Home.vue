@@ -11,7 +11,7 @@
                     <i class="el-icon-menu"></i>
                     <span slot="title">menuConfig</span>
                   </el-menu-item>-->
-                   <el-menu-item index="/equipList">
+                  <el-menu-item index="/equipList">
                     <i class="el-icon-menu"></i>
                     <span slot="title">数据列表</span>
                   </el-menu-item>
@@ -33,17 +33,43 @@
           <el-container>
             <el-header>
               <el-row :gutter="15">
-                  <el-card class="box-card" style="height: 60px;margin-left:-10px;;width: 100%;">
-                    <el-row>
-                      <el-col :span="1" style="margin-top: -5px;margin-left: -20px;">
-                        <i class="el-icon-s-fold" v-if="!isCollapse" @click="collapse" style="display: block;font-size: 30px;cursor: pointer;"></i>
-                        <i class="el-icon-s-unfold" v-if="isCollapse" @click="collapse" style="display: block;font-size: 30px;cursor: pointer;"></i>
-                      </el-col>
-                      <el-col :span="8" style="margin-left: -500px;margin-top: 4px;">
-                        <breadcrumb style="margin-left: 500px;width: 200px  ;"></breadcrumb>
-                      </el-col>
-                    </el-row>
-                  </el-card>
+                <el-card class="box-card" style="height: 60px;margin-left:-10px;;width: 100%;">
+                  <el-row>
+                    <el-col :span="1" style="margin-top: -5px;margin-left: 20px;">
+                      <i class="el-icon-s-fold" v-if="!isCollapse" @click="collapse" style="display: block;font-size: 30px;cursor: pointer;"></i>
+                      <i class="el-icon-s-unfold" v-if="isCollapse" @click="collapse" style="display: block;font-size: 30px;cursor: pointer;"></i>
+                    </el-col>
+                    <el-col :span="8" style="margin-left: -500px;margin-top: 4px;">
+                      <breadcrumb style="margin-left: 500px;width: 200px  ;"></breadcrumb>
+                    </el-col>
+                    
+                    <el-col :span="10">
+                      <i class="el-icon-message-solid" style="position: absolute;right: 300px; height: 100%;"></i>
+                      <el-dropdown style="position: absolute;right: 220px; height: 100%;margin-top: -15px;">
+                        <span class="el-dropdown-link">
+                           <div>
+                            <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+                            <i class="el-icon-arrow-down el-icon--right"></i>
+                          </div>
+                        </span>
+                        <el-dropdown-menu slot="dropdown">
+                          <el-dropdown-item>个人中心</el-dropdown-item>
+                          <span style="display:block;">
+                            <el-dropdown-item>
+                                                          设置
+                            </el-dropdown-item>
+                          </span>
+                          <span style="display:block;" @click="logout">
+                            <el-dropdown-item divided>
+                                                          退出登录
+                            </el-dropdown-item>
+                          </span>
+                        </el-dropdown-menu>
+                      </el-dropdown>
+
+                    </el-col>
+                  </el-row>
+                </el-card>
               </el-row>
             </el-header>
 
@@ -62,6 +88,7 @@
 
 <script>
   import breadcrumb from '@/components/breadcrumb.vue'
+  import { removeToken } from '@/utils/auth'
   export default {
     data() {
       return {
@@ -73,7 +100,7 @@
     },
     provide() {
       return {
-         reload: this.reload
+        reload: this.reload
       }
     },
     mounted() {
@@ -85,7 +112,7 @@
       //    this.promotion()
     },
     methods: {
-      collapse(){
+      collapse() {
         this.isCollapse = !this.isCollapse
       },
       handleSelect(key, keyPath) {
@@ -98,25 +125,31 @@
       promotion() {
         alert(JSON.stringify(this.$store.state.routes))
       },
-       reload() {
+      reload() {
         this.isRouterAlive = false;
-        this.$nextTick(function(){
+        this.$nextTick(function() {
           this.isRouterAlive = true
         })
+      },
+      logout(){
+        removeToken();
+        this.$router.push("/login")
+        this.$message.success("登出成功")
+        
       }
     },
     watch: {
       "$route.path": function(newVal) {
         const rout = newVal.split("/")
-//      alert(rout)
-        const activePart = "/"+rout[1]
-//      alert(activePart)
+        //      alert(rout)
+        const activePart = "/" + rout[1]
+        //      alert(activePart)
         this.activeIndex = activePart
       }
     },
     computed: {
       routes() {
-//      alert(JSON.stringify(this.$store.state.routes));
+        //      alert(JSON.stringify(this.$store.state.routes));
         return this.$store.state.routes
       }
     },
@@ -153,9 +186,9 @@
     position: fixed;
     z-index: 999;
     top: 0;
-    left: 230px;
+    height: 60px;
     width: 100%;
-    height: 100%;
+    left: 230px;
   }
   
   .el-footer {

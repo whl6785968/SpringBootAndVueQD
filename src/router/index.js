@@ -16,6 +16,7 @@ import equipList from '@/components/equipList/'
 import authControl from '@/components/authControl/'
 import menuConfig from '@/components/authControl/components/menuConfig.vue'
 import ehistory from '@/components/equipList/components/history.vue'
+import orientation from '@/components/equipList/components/orientation.vue'
 
 Vue.use(Router)
 
@@ -47,6 +48,10 @@ export default new Router({
         {
           path: '/equipList/ehistory',
           component:ehistory
+        },
+        {
+          path:'/equipList/orientation',
+          component: orientation
         }
 
       ],

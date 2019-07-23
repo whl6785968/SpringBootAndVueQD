@@ -1,4 +1,4 @@
-import { getEquipList,getDetail,getPm10,getShowData,getRef,getCata,getDetailData,getRefByEdid,exportData } from '@/api/equip'
+import { getEquipList,getDetail,getPm10,getShowData,getRef,getCata,getDetailData,getRefByEdid,exportData,getAllEquipInfo } from '@/api/equip'
 
 const state = {
   equipList: []
@@ -87,6 +87,15 @@ const actions = {
   exportData({ commit },edid){
     return new Promise((resolve,reject) => {
       exportData(edid).then(response => {
+        resolve(response)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  getAllEquipInfo({ commit }){
+    return new Promise((resolve,reject) => {
+      getAllEquipInfo().then(response => {
         resolve(response)
       }).catch(error => {
         reject(error)

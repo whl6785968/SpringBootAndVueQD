@@ -66,8 +66,16 @@ export function getRefByEdid(edid){
 export function exportData(edid){
   return request({
     url: '/equip/exportEquipData',
-    method: 'get',
+    method: 'post',
     params: { edid }
   })
 }
+
+export function getAllEquipInfo(){
+  return request({
+    url: '/equip/getAllEquipInfo',
+    method: 'get'
+  })
+}
+
 
