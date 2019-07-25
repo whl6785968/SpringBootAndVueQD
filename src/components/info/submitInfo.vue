@@ -95,6 +95,10 @@
     },
     mounted(){
       this.getUserInfo()
+//    this.openConnect()
+    },
+    destroyed(){
+//    this.closeConnect()
     },
     methods: {
       getUserInfo(){
@@ -108,6 +112,7 @@
               this.$store.dispatch('msg/sendNotice', this.ruleForm).then(result => {
                 if(result.status == 200) {
                   this.$message.success("提交成功")
+                  this.$store.dispatch('msg/send')
                   this.$router.push("/plan")
                 } else {
                   this.$message.error("提交失败")
@@ -122,6 +127,15 @@
       resetForm(formName) {
         this.$refs[formName].resetFields();
       }
+//    openConnect(){
+//      alert("开启连接")
+//      this.$store.dispatch('msg/connect')
+//    },
+//    closeConnect(){
+//      alert("关闭连接")
+//      this.$store.dispatch('msg/closeConnect')
+//    }
+//    
     }
   }
 </script>

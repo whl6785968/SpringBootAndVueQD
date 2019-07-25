@@ -37,7 +37,6 @@
     methods: {
       getMsgList(){
         this.$store.dispatch('msg/getMsgList').then(result => {
-          alert(JSON.stringify(result))
         })
       }
     }

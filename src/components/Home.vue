@@ -44,7 +44,9 @@
                     </el-col>
                     
                     <el-col :span="10">
-                      <i class="el-icon-message-solid" style="position: absolute;right: 300px; height: 100%;"></i>
+                      <el-badge :value="this.$store.state.msg.infoCount" :max="99" class="item" style="padding: 0;position: absolute;right: 350px; height: 100%;margin: 0;" >
+                        <router-link to="/msg"><i class="el-icon-message-solid" style="font-size: 22px;"></i></router-link>
+                      </el-badge>
                       <el-dropdown style="position: absolute;right: 220px; height: 100%;margin-top: -15px;">
                         <span class="el-dropdown-link">
                            <div>
@@ -88,14 +90,18 @@
 
 <script>
   import breadcrumb from '@/components/breadcrumb.vue'
-  import { removeToken } from '@/utils/auth'
+  import { removeToken,getToken } from '@/utils/auth'
+  import SockJS from 'sockjs-client'
+  import Stomp from 'stompjs' 
   export default {
     data() {
       return {
         activeIndex2: '/goodlist',
         activeIndex: '2',
         isCollapse: false,
-        isRouterAlive: true
+        isRouterAlive: true,
+        infoCount: 0,
+        stompClient: null
       }
     },
     provide() {
@@ -110,6 +116,12 @@
         this.activeIndex2 = '/goodlist'
       };
       //    this.promotion()
+//    this.initWebSocket()
+      this.getNotReadCount()
+      
+    },
+    destroyed(){
+      this.closeConnect()
     },
     methods: {
       collapse() {
@@ -136,7 +148,33 @@
         this.$router.push("/login")
         this.$message.success("登出成功")
         
-      }
+      },
+      getNotReadCount(){
+        const token = getToken()
+        this.$store.dispatch('msg/getMsgCount',token).then(result => {
+          this.infoCount = result.obj.infoCount
+          this.wsConnect()
+        })
+      },
+//    openConnect(){
+//      const socket = new SockJS("http://localhost:8081/pullMsg")
+//      this.stompClient = Stomp.over(socket)
+//      this.stompClient.connect({},(frame) => {
+//        this.stompClient.subscribe("/topic/publicMsg",message => {
+//          alert(message)
+//        })
+//      })
+//    },
+      closeConnect(){
+        this.$store.dispatch('msg/closeConnect')
+      },
+//    initWebSocket(){
+//      this.openConnect()
+//    },
+      wsConnect(){
+        this.$store.dispatch("msg/connect",this.infoCount)
+      },
+
     },
     watch: {
       "$route.path": function(newVal) {
@@ -157,6 +195,7 @@
       'breadcrumb': breadcrumb
     }
   };
+  
 </script>
 
 <style lang="scss" scoped>

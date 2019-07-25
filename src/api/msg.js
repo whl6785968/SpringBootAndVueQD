@@ -1,7 +1,6 @@
 import request from '@/utils/request'
 
 export function sendNotice(data){
-  alert(JSON.stringify(data))
   return request({
     url: '/msg/sendNotice',
     method: 'post',
@@ -13,5 +12,13 @@ export function getMsgList(){
   return request({
     url: '/msg/getMsgList',
     method: 'get'
+  })
+}
+
+export function getMsgCount(token){
+  return request({
+    url: '/msg/getNotReadCount',
+    method: 'get',
+    params: { token }
   })
 }

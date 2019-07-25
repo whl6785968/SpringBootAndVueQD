@@ -16,12 +16,12 @@ import 'font-awesome/css/font-awesome.css'
 
 import BMap from 'vue-baidu-map'
 
-Vue.use(BMap,{
+Vue.use(BMap, {
   ak: 'xoKsurOO9lwXDwRt57TMef0A4eZ5m2ir'
 })
 
 import moment from 'moment'
-Vue.filter('dateFormat',function(dataStr,pattern="YYYY-MM-DD HH:mm:ss"){
+Vue.filter('dateFormat', function(dataStr, pattern = "YYYY-MM-DD HH:mm:ss") {
   return moment(dataStr).format(pattern)
 })
 
@@ -42,13 +42,13 @@ router.beforeEach((to, from, next) => {
         path: '/home'
       });
     } else {
-      store.dispatch('user/getInfo',hasToken).then(response => {
+      store.dispatch('user/getInfo', hasToken).then(response => {
         const data = response
         const id = data.id
-        initMenu(router,store,id)
+        initMenu(router, store, id)
         next()
       })
-      
+
     }
   } else {
     if(whiteList.indexOf(to.path) !== -1) {

@@ -17,6 +17,7 @@ import authControl from '@/components/authControl/'
 import menuConfig from '@/components/authControl/components/menuConfig.vue'
 import ehistory from '@/components/equipList/components/history.vue'
 import orientation from '@/components/equipList/components/orientation.vue'
+import msg from '@/components/info/msg/msg.vue'
 
 Vue.use(Router)
 
@@ -52,6 +53,10 @@ export default new Router({
         {
           path:'/equipList/orientation',
           component: orientation
+        },
+        {
+          path: '/msg',
+          component: msg
         }
 
       ],
