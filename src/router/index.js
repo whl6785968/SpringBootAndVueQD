@@ -18,6 +18,7 @@ import menuConfig from '@/components/authControl/components/menuConfig.vue'
 import ehistory from '@/components/equipList/components/history.vue'
 import orientation from '@/components/equipList/components/orientation.vue'
 import msg from '@/components/info/msg/msg.vue'
+import publicMsgDetail from '@/components/info/msg/publicMsgDetail.vue'
 
 Vue.use(Router)
 
@@ -57,6 +58,10 @@ export default new Router({
         {
           path: '/msg',
           component: msg
+        },
+        {
+          path: '/publicMsgDetail',
+          component: publicMsgDetail
         }
 
       ],

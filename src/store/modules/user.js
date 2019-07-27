@@ -3,7 +3,7 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const state = {
   token: getToken(),
-  name: '',
+  id: '',
   avatar: '',
   roles: []
 }
@@ -12,8 +12,8 @@ const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
   },
-  SET_NAME: (state, name) => {
-    state.name = name
+  SET_ID: (state, id) => {
+    state.id = id
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
@@ -29,17 +29,15 @@ const actions = {
       return new Promise((resolve, reject) => {
         login({ username: username.trim(), password: password }).then(response => {
           const data = response
-//        alert(JSON.stringify(response))
           commit('SET_TOKEN', data.token)
           setToken(data.token)
+          getInfo()
           resolve(data)
         }).catch(error => {
           reject(error)
         })
       })
     },
-        
-        
     getInfo({ commit,state }) {
       return new Promise((resolve, reject) => {
             getInfo(state.token).then(response => {
@@ -48,11 +46,7 @@ const actions = {
               if(!data) {
                 reject('Verification failed, please Login again.')
               }
-//            if(!roles || roles.length <= 0) {
-//              reject('getInfo: roles must be a non-null array!')
-//            }
-//            commit('SET_ROLES', roles)
-              commit('SET_NAME', data.username)
+              commit('SET_ID', data.id)
               resolve(data)
             }).catch(error => {
               reject(error)

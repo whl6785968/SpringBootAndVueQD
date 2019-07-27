@@ -61,12 +61,19 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if(valid) {
-            alert('submit!');
             this.$store.dispatch('user/login', this.ruleForm).then(result => {
               if(result.token != null) {
                 this.$router.push("/home")
+                this.$message({
+                  message: '登陆成功',
+                  type: 'success'
+                })
               } else {
                 this.$router.push("/login")
+                this.$message({
+                  message: '请登录',
+                  type: 'warning'
+                })
               }
             })
           } else {

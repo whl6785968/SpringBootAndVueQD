@@ -22,3 +22,19 @@ export function getMsgCount(token){
     params: { token }
   })
 }
+
+export function changeReadState(msid,uid){
+  return request({
+    url: '/msg/changeReadState',
+    method: 'post',
+    params: { msid,uid }
+  })
+}
+
+export function getPublicMsgTitle(uid){
+  return request({
+    url: '/msg/getPublicMsgTitle',
+    method: 'get',
+    params: { uid }
+  })
+}

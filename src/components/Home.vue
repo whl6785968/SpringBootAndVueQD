@@ -101,7 +101,8 @@
         isCollapse: false,
         isRouterAlive: true,
         infoCount: 0,
-        stompClient: null
+        stompClient: null,
+        isFirst:true
       }
     },
     provide() {
@@ -153,7 +154,7 @@
         const token = getToken()
         this.$store.dispatch('msg/getMsgCount',token).then(result => {
           this.infoCount = result.obj.infoCount
-          this.wsConnect()
+          this.wsConnect(this.infoCount)
         })
       },
 //    openConnect(){
@@ -179,17 +180,32 @@
     watch: {
       "$route.path": function(newVal) {
         const rout = newVal.split("/")
-        //      alert(rout)
         const activePart = "/" + rout[1]
-        //      alert(activePart)
         this.activeIndex = activePart
+      },
+//    'this.$store.state.msg.infoCount'(newVal,oldVal){
+//      alert(newVal)
+//    }
+      changeMsgCount: function(val){
+        this.$notify.info({
+            title: '消息',
+            message: '您有一条新的消息'
+          });
       }
+     
     },
     computed: {
       routes() {
         //      alert(JSON.stringify(this.$store.state.routes));
         return this.$store.state.routes
+      },
+      changeMsgCount() {
+        return this.$store.state.msg.infoCount
       }
+//    'this.$store.state.msg.infoCount':function(){
+//      alert("值变了呢")
+//    }
+    
     },
     components: {
       'breadcrumb': breadcrumb
