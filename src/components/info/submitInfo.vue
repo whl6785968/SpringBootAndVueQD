@@ -28,6 +28,14 @@
             <el-radio label="其他"></el-radio>
           </el-radio-group>
         </el-form-item>
+        <el-form-item label="图片上传" prop="pic">
+          <el-upload action="/uploadPic" list-type="picture-card" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :on-success="handleSuccess">
+            <i class="el-icon-plus"></i>
+          </el-upload>
+          <el-dialog :visible.sync="dialogVisible" size="tiny">
+            <img width="100%" :src="dialogImageUrl" alt="">
+          </el-dialog>
+        </el-form-item>
         <el-form-item label="信息备注" prop="other">
           <el-input type="textarea" v-model="ruleForm.other"></el-input>
         </el-form-item>
@@ -53,8 +61,11 @@
           isemer: false,
           type: '',
           other: '',
-          uid: ''
+          uid: '',
+          imgList: []
         },
+        dialogImageUrl: '',
+        dialogVisible: false,
         inject: ['reload'],
         rules: {
           name: [{
@@ -93,15 +104,15 @@
         }
       };
     },
-    mounted(){
+    mounted() {
       this.getUserInfo()
-//    this.openConnect()
+      //    this.openConnect()
     },
-    destroyed(){
-//    this.closeConnect()
+    destroyed() {
+      //    this.closeConnect()
     },
     methods: {
-      getUserInfo(){
+      getUserInfo() {
         this.$store.dispatch('user/getInfo', getToken).then(response => {
           this.ruleForm.uid = response.id
         })
@@ -109,15 +120,15 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if(valid) {
-              this.$store.dispatch('msg/sendNotice', this.ruleForm).then(result => {
-                if(result.status == 200) {
-                  this.$message.success("提交成功")
-                  this.$store.dispatch('msg/send')
-                  this.$router.push("/plan")
-                } else {
-                  this.$message.error("提交失败")
-                }
-              })
+            this.$store.dispatch('msg/sendNotice', this.ruleForm).then(result => {
+              if(result.status == 200) {
+                this.$message.success("提交成功")
+                this.$store.dispatch('msg/send')
+                this.$router.push("/msg")
+              } else {
+                this.$message.error("提交失败")
+              }
+            })
           } else {
             console.log('error submit!!');
             return false;
@@ -126,16 +137,19 @@
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
+      },
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePictureCardPreview(file) {
+        this.dialogImageUrl = file.url;
+        this.dialogVisible = true;
+      },
+      handleSuccess(response, file, fileList){
+//      alert(response)
+        this.ruleForm.imgList.push('../../../..'+response)
       }
-//    openConnect(){
-//      alert("开启连接")
-//      this.$store.dispatch('msg/connect')
-//    },
-//    closeConnect(){
-//      alert("关闭连接")
-//      this.$store.dispatch('msg/closeConnect')
-//    }
-//    
+    
     }
   }
 </script>

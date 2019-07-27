@@ -187,10 +187,14 @@
 //      alert(newVal)
 //    }
       changeMsgCount: function(val){
-        this.$notify.info({
+        if(val > this.$store.state.msg.currCount){
+          this.$notify.info({
             title: '消息',
             message: '您有一条新的消息'
           });
+          this.$store.state.msg.currCount = val
+        }
+        
       }
      
     },

@@ -1,4 +1,4 @@
-import { sendNotice, getMsgList, getMsgCount,getPublicMsgTitle,changeReadState } from '@/api/msg'
+import { sendNotice, getMsgList, getMsgCount,getPublicMsgTitle,changeReadState,getPublicMsgDetail,deleteMsg } from '@/api/msg'
 import { getToken } from '@/utils/auth'
 
 //import SockJS from  'sockjs-client';
@@ -11,7 +11,8 @@ const state = {
   stomp: '',
   notReadCount: '',
   isConnected: false,
-  infoCount: ''
+  infoCount: '',
+  currCount: ''
 }
 
 const mutations = {
@@ -30,7 +31,8 @@ const actions = {
       isemer,
       type,
       other,
-      uid
+      uid,
+      imgList
     } = msg
     return new Promise((resolve, reject) => {
       sendNotice({
@@ -40,7 +42,8 @@ const actions = {
         isemer: isemer,
         type: type,
         other: other,
-        uid: uid
+        uid: uid,
+        imgList: imgList.toString()
       }).then(response => {
         resolve(response)
       }).catch(error => {
@@ -64,6 +67,7 @@ const actions = {
     state
   }, infoCount) {
     state.infoCount = infoCount
+    state.currCount = infoCount
     state.stomp = Stomp.over(new SockJS("http://localhost:8081/pullMsg"));
     state.stomp.connect({}, frame => {
       state.stomp.subscribe("/topic/publicMsg", message => {
@@ -72,6 +76,7 @@ const actions = {
         return new Promise((resolve, reject) => {
           getMsgCount(token).then(result => {
             state.infoCount = result.obj.infoCount
+            alert(state.infoCount)
             resolve(result)
           }).catch(error => {
             reject(error)
@@ -119,6 +124,25 @@ const actions = {
     const { msid,uid } = info
     return new Promise((resolve,reject) => {
       changeReadState(msid,uid).then(response => {
+        resolve(response)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  getPublicMsgDetail({ commit },msid){
+    return new Promise((resolve,reject) => {
+      getPublicMsgDetail(msid).then(response => {
+        resolve(response)
+      }).catch(error => {
+        reject(Error)
+      })
+    })
+  },
+  deleteMsg({ commit },info){
+    const { msids,uid } = info 
+    return new Promise((resolve,reject) => {
+      deleteMsg(msids,uid).then(response => {
         resolve(response)
       }).catch(error => {
         reject(error)
