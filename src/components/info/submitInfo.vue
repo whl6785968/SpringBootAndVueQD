@@ -1,6 +1,6 @@
 <template>
   <div style="width: 500px;">
-    <el-card class="box-card" style="width: 650px;margin-left: 340px;margin-top: 80px;padding: 50px;">
+    <el-card class="box-card" style="width: 650px;margin-left: 340px;margin-top: 0px;padding: 50px;">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <el-form-item label="站点名称" prop="name">
           <el-input v-model="ruleForm.name"></el-input>

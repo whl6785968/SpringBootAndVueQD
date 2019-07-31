@@ -34,7 +34,7 @@
           </el-table>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="配置管理">报警记录</el-tab-pane>
+      <el-tab-pane label="报警记录">报警记录</el-tab-pane>
       <el-tab-pane label="定位监控"><orientation></orientation></el-tab-pane>
       <el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane>
     </el-tabs>

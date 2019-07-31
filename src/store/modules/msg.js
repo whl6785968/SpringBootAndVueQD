@@ -102,6 +102,7 @@ const actions = {
   }) {
     const token = getToken()
     state.stomp.send("/app/getMsgCount", {}, token)
+//  socket.send(token)
   },
 
   closeConnect({

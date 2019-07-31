@@ -15,6 +15,10 @@
                     <i class="el-icon-menu"></i>
                     <span slot="title">数据列表</span>
                   </el-menu-item>
+                  <el-menu-item index="/dataAna">
+                    <i class="el-icon-menu"></i>
+                    <span slot="title">数据处理</span>
+                  </el-menu-item>
                   <template v-for="(item,index) in this.routes" v-if="!item.hidden">
                     <el-submenu :key="index" :index="index+''">
                       <template slot="title">
@@ -116,9 +120,8 @@
       if(this.activeIndex2 == '/home') {
         this.activeIndex2 = '/goodlist'
       };
-      //    this.promotion()
-//    this.initWebSocket()
       this.getNotReadCount()
+//    this.connectOriginWebSocket()
       
     },
     destroyed(){
@@ -157,25 +160,39 @@
           this.wsConnect(this.infoCount)
         })
       },
-//    openConnect(){
-//      const socket = new SockJS("http://localhost:8081/pullMsg")
-//      this.stompClient = Stomp.over(socket)
-//      this.stompClient.connect({},(frame) => {
-//        this.stompClient.subscribe("/topic/publicMsg",message => {
-//          alert(message)
-//        })
-//      })
-//    },
       closeConnect(){
         this.$store.dispatch('msg/closeConnect')
+//      socket.close()
       },
-//    initWebSocket(){
-//      this.openConnect()
-//    },
+
       wsConnect(){
         this.$store.dispatch("msg/connect",this.infoCount)
       },
-
+      connectOriginWebSocket(){
+        var socket
+        
+        if(typeof(WebSocket) == "undefined"){
+          alert("你的浏览器不支持websocket")
+        }
+        
+        socket = new WebSocket("ws://localhost:8081/ws/webSocket")
+        socket.onopen = function(){
+          console.log("websocket已经打开")
+//        socket.send("测试消息")
+        }
+        
+        socket.onmessage = function(msg){
+          alert(msg.data)
+        }
+        
+        socket.onclose = function(msg){
+          console.log("websocket已经关闭")
+        }
+        
+        socket.onerror = function(){
+          console.log("websocket发生了错误")
+        }
+      }
     },
     watch: {
       "$route.path": function(newVal) {
